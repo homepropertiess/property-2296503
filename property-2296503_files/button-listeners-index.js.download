@@ -1,0 +1,5 @@
+﻿$('#clear-filters-btn').click(() => clearFiltersHome());
+$('#propertiesSearch').click(() => filtersHome());
+$('#post-code-btn-home').click(() => filtersHome());
+$('#post-code-btn-home').click(() => filtersLayout());
+$('#layoutSearch').click(() => filtersLayout());

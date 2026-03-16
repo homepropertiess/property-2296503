@@ -1,0 +1,465 @@
+﻿function valuesFromQueries(pageClicked) {
+    let id = $("#property-code").val();
+
+    let controlAim = document.getElementById('aim-field');
+    let aim = controlAim.tomselect.items;
+    aim = aim.join("");
+
+    let controlArea = document.getElementById('select-area');
+    let area = controlArea.tomselect.items;
+    area = area.join(",");
+
+    let priceFrom = $('#priceFrom').val();
+    priceFrom = priceFrom.replaceAll(".","");
+    priceFrom = parseInt(priceFrom);
+
+    let priceTo = $('#priceTo').val();
+    priceTo = priceTo.replaceAll(".","");
+    priceTo = parseInt(priceTo);
+
+    let controlRooms = document.getElementById('roomsFrom');
+    let roomsFrom = controlRooms.tomselect.items;
+    roomsFrom = roomsFrom.join("");
+    
+    // let bathroomsFrom = $('#bathroomsFrom').val();
+    // bathroomsFrom = parseInt(bathroomsFrom);
+
+    let controlBathrooms = document.getElementById('bathroomsFrom');
+    let bathroomsFrom = controlBathrooms.tomselect.items;
+    bathroomsFrom = bathroomsFrom.join("");   
+
+    let controlCategory = document.getElementById('category');
+    let category = controlCategory.tomselect.items;
+    category = category.join("");
+
+    let controlSubcategory = document.getElementById('subcategory');
+    let subCategory = controlSubcategory.tomselect.items;
+    subCategory = subCategory.join(",");
+
+    let sqrMetersFrom = $('#sqrMetersFrom').val();
+    sqrMetersFrom = parseInt(sqrMetersFrom);
+
+    let sqrMetersTo = $('#sqrMetersTo').val();
+    sqrMetersTo = parseInt(sqrMetersTo);
+
+    let controlConstructYearFrom = document.getElementById('constructYearFrom');
+    let constructYearFrom = controlConstructYearFrom.tomselect.items;
+    constructYearFrom = constructYearFrom.join("");
+
+    let controlConstructYearTo = document.getElementById('constructYearTo');
+    let constructYearTo = controlConstructYearTo.tomselect.items;
+    constructYearTo = constructYearTo.join("");
+
+    let controlRenovationYearFrom = document.getElementById('renovationYearFrom');
+    let renovationYearFrom = controlRenovationYearFrom.tomselect.items;
+    renovationYearFrom = renovationYearFrom.join("");
+
+    let controlRenovationYearTo = document.getElementById('renovationYearTo');
+    let renovationYearTo = controlRenovationYearTo.tomselect.items;
+    renovationYearTo = renovationYearTo.join("");
+    
+    let controlStatus = document.getElementById('select-status');
+    let estateStatus = controlStatus.tomselect.items;
+    estateStatus = estateStatus.join("");
+    
+    let controlAdvantage = document.getElementById('select-advantage');
+    let advantages = controlAdvantage.tomselect.items;
+    advantages = advantages.join(",");
+    
+    let controlView = document.getElementById('select-view');
+    let view = controlView.tomselect.items;
+    view = view.join(",");
+    
+    let controlSuitableFor = document.getElementById('select-suitableFor');    
+    let suitableFor = controlSuitableFor.tomselect.items;
+    suitableFor = suitableFor.join(",");
+        
+    let controlFloorFor = document.getElementById('select-floorFrom');
+    let floorFrom = controlFloorFor.tomselect.items;
+    floorFrom = floorFrom.join("");
+
+    let controlHeatingType = document.getElementById('select-heatingType');
+    let heatingType = controlHeatingType.tomselect.items;
+    heatingType = heatingType.join("");
+
+    let controlHeatingMedium = document.getElementById('select-heatingMedium');   
+    let heatingMedium = controlHeatingMedium.tomselect.items;
+    heatingMedium = heatingMedium.join(",");
+    
+    let controlSecurity = document.getElementById('select-security');
+    let security = controlSecurity.tomselect.items;
+    security = security.join(",");
+
+    let controlAmenities = document.getElementById('select-propertyAmenities');
+    let amenities = controlAmenities.tomselect.items;
+    amenities = amenities.join(",");
+
+    let controlSpecial = document.getElementById('select-propertySpecial');
+    let specialFeatures = controlSpecial.tomselect.items;
+    specialFeatures = specialFeatures.join(",");
+
+    let controlUnique = document.getElementById('select-propertyUnique');
+    let uniqueFeatures = controlUnique.tomselect.items;
+    uniqueFeatures = uniqueFeatures.join("");
+
+    let controlCommercialAmenities = document.getElementById('select-commercialAmenities');
+    let commercialAmenities = controlCommercialAmenities.tomselect.items;
+    commercialAmenities = commercialAmenities.join("");
+
+    let controlSuitableForCommercial = document.getElementById('select-suitableForCommercial');
+    let suitableForCommercial = controlSuitableForCommercial.tomselect.items;
+    suitableForCommercial = suitableForCommercial.join("");
+
+    let controlCommercialAdvantages = document.getElementById('select-commercialAdvantages');
+    let commercialAdvantages = controlCommercialAdvantages.tomselect.items;
+    commercialAdvantages = commercialAdvantages.join("");
+
+    let controlLandUsage = document.getElementById('select-landUsage');
+    let landUsage = controlLandUsage.tomselect.items;
+    landUsage = landUsage.join("");
+
+    let controlLandZone = document.getElementById('select-landZone');
+    let landZone = controlLandZone.tomselect.items;
+    landZone = landZone.join("");
+
+    let controlSuitableForLands = document.getElementById('select-suitableForLands');
+    let suitableForLands = controlSuitableForLands.tomselect.items;
+    suitableForLands = suitableForLands.join(",");
+
+    let controlLandSpecialFeatures = document.getElementById('select-specialForLands');
+    let landSpecialFeatures = controlLandSpecialFeatures.tomselect.items;
+    landSpecialFeatures = landSpecialFeatures.join(",");
+
+    let controlLandUniqueFeatures = document.getElementById('select-uniqueForLands');
+    let landUniqueFeatures = controlLandUniqueFeatures.tomselect.items;
+    landUniqueFeatures = landUniqueFeatures.join(",");
+    
+    let parking = $('#parking').is(":checked");
+    let storage = $('#storage').is(":checked");
+    let fireplace = $('#fireplace').is(":checked");
+    let swimmingPool = $('#swimmingpool').is(":checked");
+    
+    let sorting = $('#sortResult').val();
+    
+    let page = pageClicked == null ? 1 : pageClicked;
+    
+    // FOR LOADING MORE PAGINATION
+    //sessionStorage.page = JSON.stringify(page);
+    
+    return {id, aim, category, subCategory, area, priceFrom, priceTo,
+        sqrMetersFrom, sqrMetersTo, constructYearFrom, constructYearTo,
+        sorting, roomsFrom, renovationYearFrom, renovationYearTo, parking,
+        storage, fireplace, swimmingPool, bathroomsFrom, estateStatus,
+        advantages, view, suitableFor, floorFrom, heatingType, heatingMedium,
+        security, amenities, specialFeatures, uniqueFeatures, commercialAmenities,
+        commercialAdvantages, suitableForCommercial, landUsage, landZone,
+        suitableForLands, landSpecialFeatures, landUniqueFeatures, page};
+}
+
+function valuesFromQueriesHome() {
+
+    let id = $("#property-code").val();
+
+    if (id !== "") return { id };
+
+    let aim = $('#aim-field-home').val();
+
+   /* let aim = 0;*/
+    //let isSelected = $("#aim-sale").attr("aria-selected");
+    //isSelected === "true" ? aim = 1 : aim = 2;
+    /*console.log(isSelected, aim);*/
+
+ /*   let isSelected1 = $("#aim-sale").is(':checked');
+    isSelected1 ? aim = 1 : aim = 2;*/
+
+
+    let category = 1; // Default category value
+
+    if ($("#category-residential").is(':checked')) {
+        category = 1;
+    } else if ($("#category-commercial").is(':checked')) {
+        category = 2;
+    } else if ($("#category-land").is(':checked')) {
+        category = 3;
+    } else if ($("#category-etc").is(':checked')) {
+        category = 4;
+    }
+
+    /*console.log(isSelected1, aim);*/
+
+    //$('.tariff-toggle').on("click", function () {
+    //    if ($('#aim-sale').is(':checked')) {
+    //        aim = 1;
+    //    }
+    //    if ($('#aim-rent').is(':checked')) {
+    //        aim = 2;
+    //    }
+    //});
+
+    //let controlStatus = document.getElementById('select-status');
+    //let estateStatus = controlStatus.tomselect.items;
+    //estateStatus = estateStatus.join("");
+
+    /* let controlCategory = document.getElementById('category-home');
+     let category = controlCategory.tomselect.items;
+     category = category.join("");*/
+
+    let controlSubcategory = document.getElementById('subcategory-home');
+    let subCategory = controlSubcategory.tomselect.items;
+    subCategory = subCategory.join(",");
+
+    let controlArea = document.getElementById('select-area');
+    let area = controlArea.tomselect.items;
+    area = area.join(",");
+
+    let priceFrom = $('#priceFrom').val();
+    priceFrom = parseInt(priceFrom);
+
+    let priceTo = $('#priceTo').val();
+    priceTo = parseInt(priceTo);
+
+    let sqrMetersFrom = $('#sqrMetersFrom').val();
+    sqrMetersFrom = parseInt(sqrMetersFrom);
+
+    let sqrMetersTo = $('#sqrMetersTo').val();
+    sqrMetersTo = parseInt(sqrMetersTo);
+
+    return { id, aim, category, subCategory, area, priceFrom, priceTo, sqrMetersFrom, sqrMetersTo };
+}
+
+function valuesFormQueriesLayout() {
+    let id = $("#property-code").val();
+    return {id}
+}
+
+function buildQueryString(queries) {
+    //console.log(queries);
+    let query = new URLSearchParams();
+    if (queries.page != null) {
+        query.append("page", queries.page);
+    }
+    if (queries.hasOwnProperty('sorting')) {
+        if (queries.sorting !== "updatedate desc") {
+            query.append("sorting", queries.sorting);
+        }
+    }
+    if (queries.hasOwnProperty('category')) {
+        if (queries.category !== "") {
+            query.append("category", queries.category);
+        }
+    }
+    if (queries.hasOwnProperty('subCategory')) {
+        if (queries.subCategory !== "") {
+            query.append("subCategory", queries.subCategory);
+        }
+    }
+    if (queries.hasOwnProperty('id')) {
+        if (queries.id !== "") {
+            query.append("id", queries.id);
+        }
+    }
+    if (queries.aim != null && queries.aim !== "") {
+        //console.log(queries.aim);
+        query.append("aim", queries.aim);
+    }
+    if (queries.area != null && queries.area !== "") {
+    /*if (queries.area !== "") {*/
+        query.append("area", queries.area);
+    }
+    if (!isNaN(queries.priceFrom)) {
+        if (queries.priceFrom !== "") {
+            query.append("priceFrom", queries.priceFrom);
+        }
+    }
+    if (!isNaN(queries.priceTo)) {
+        if (queries.priceTo !== "") {
+            query.append("priceTo", queries.priceTo);
+        }
+    }
+    //if (!isNaN(queries.roomsFrom)) {
+    //    query.append("roomsFrom", queries.roomsFrom);
+    //}
+
+    if (queries.hasOwnProperty('roomsFrom')) {
+       if (queries.roomsFrom !== "") {
+           query.append("roomsFrom", queries.roomsFrom);
+       }
+    }
+
+    // if (queries.hasOwnProperty('masterBedrooms')) {
+    //     if (queries.masterBedrooms !== "") {
+    //         query.append("masterBedrooms", queries.masterBedrooms);
+    //     }
+    // }
+
+    //if (!isNaN(queries.bathroomsFrom)) {
+    //    query.append("bathroomsFrom", queries.bathroomsFrom);
+    //}
+
+    if (queries.hasOwnProperty('bathroomsFrom')) {
+        if (queries.bathroomsFrom !== "") {
+            query.append("bathroomsFrom", queries.bathroomsFrom);
+        }
+    }
+
+    if (!isNaN(queries.sqrMetersFrom)) {
+        if (queries.sqrMetersFrom !== "") {
+            query.append("sqrMetersFrom", queries.sqrMetersFrom);
+        }
+    }
+    if (!isNaN(queries.sqrMetersTo)) {
+        if (queries.sqrMetersTo !== "") {
+            query.append("sqrMetersTo", queries.sqrMetersTo);
+        }
+    }
+    //if (!isNaN(queries.constructYearFrom)) {
+    //    query.append("constructYearFrom", queries.constructYearFrom);
+    //}
+    //if (!isNaN(queries.constructYearTo)) {
+    //    query.append("constructYearTo", queries.constructYearTo);
+    //}
+    //if (!isNaN(queries.renovationYearFrom)) {
+    //    query.append("renovationYearFrom", queries.renovationYearFrom);
+    //}
+    //if (!isNaN(queries.renovationYearTo)) {
+    //    query.append("renovationYearTo", queries.renovationYearTo);
+    //}
+
+    if (queries.hasOwnProperty('constructYearFrom')) {
+        if (queries.constructYearFrom !== "") {
+            query.append("constructYearFrom", queries.constructYearFrom);
+        }
+    }
+    if (queries.hasOwnProperty('constructYearTo')) {
+        if (queries.constructYearTo !== "") {
+            query.append("constructYearTo", queries.constructYearTo);
+        }
+    }
+    if (queries.hasOwnProperty('renovationYearFrom')) {
+        if (queries.renovationYearFrom !== "") {
+            query.append("renovationYearFrom", queries.renovationYearFrom);
+        }
+    }
+    if (queries.hasOwnProperty('renovationYearTo')) {
+        if (queries.renovationYearTo !== "") {
+            query.append("renovationYearTo", queries.renovationYearTo);
+        }
+    }
+
+    if (queries.hasOwnProperty('estateStatus')) {
+        if (queries.estateStatus !== "") {
+            query.append("estateStatus", queries.estateStatus);
+        }
+    }
+    if (queries.hasOwnProperty('advantages')) {
+        if (queries.advantages !== "") {
+            query.append("advantages", queries.advantages);
+        }
+    }
+    if (queries.hasOwnProperty('view')) {
+        if (queries.view !== "") {
+            query.append("view", queries.view);
+        }
+    }
+    if (queries.hasOwnProperty('suitableFor')) {
+        if (queries.suitableFor !== "") {
+            query.append("suitableFor", queries.suitableFor);
+        }
+    }
+    if (queries.hasOwnProperty('floorFrom')) {
+        if (queries.floorFrom !== "") {
+            query.append("floorFrom", queries.floorFrom);
+        }
+    }
+    if (queries.hasOwnProperty('heatingType')) {
+        if (queries.heatingType !== "") {
+            query.append("heatingType", queries.heatingType);
+        }
+    }
+    if (queries.hasOwnProperty('heatingMedium')) {
+        if (queries.heatingMedium !== "") {
+            query.append("heatingMedium", queries.heatingMedium);
+        }
+    }
+    if (queries.hasOwnProperty('security')) {
+        if (queries.security !== "") {
+            query.append("security", queries.security);
+        }
+    }
+    if (queries.hasOwnProperty('amenities')) {
+        if (queries.amenities !== "") {
+            query.append("amenities", queries.amenities);
+        }
+    }
+    if (queries.hasOwnProperty('specialFeatures')) {
+        if (queries.specialFeatures !== "") {
+            query.append("specialFeatures", queries.specialFeatures);
+        }
+    }
+    if (queries.hasOwnProperty('uniqueFeatures')) {
+        if (queries.uniqueFeatures !== "") {
+            query.append("uniqueFeatures", queries.uniqueFeatures);
+        }
+    }
+    if (queries.hasOwnProperty('commercialAmenities')) {
+        if (queries.commercialAmenities !== "") {
+            query.append("commercialAmenities", queries.commercialAmenities);
+        }
+    }
+    if (queries.hasOwnProperty('suitableForCommercial')) {
+        if (queries.suitableForCommercial !== "") {
+            query.append("suitableForCommercial", queries.suitableForCommercial);
+        }
+    }
+    if (queries.hasOwnProperty('commercialAdvantages')) {
+        if (queries.commercialAdvantages !== "") {
+            query.append("commercialAdvantages", queries.commercialAdvantages);
+        }
+    }
+    if (queries.hasOwnProperty('landUsage')) {
+        if (queries.landUsage !== "") {
+            query.append("landUsage", queries.landUsage);
+        }
+    }
+    if (queries.hasOwnProperty('landZone')) {
+        if (queries.landZone !== "") {
+            query.append("landZone", queries.landZone);
+        }
+    }
+    if (queries.hasOwnProperty('suitableForLands')) {
+        if (queries.suitableForLands !== "") {
+            query.append("suitableForLands", queries.suitableForLands);
+        }
+    }
+    if (queries.hasOwnProperty('landSpecialFeatures')) {
+        if (queries.landSpecialFeatures !== "") {
+            query.append("landSpecialFeatures", queries.landSpecialFeatures);
+        }
+    }
+    if (queries.hasOwnProperty('landUniqueFeatures')) {
+        if (queries.landUniqueFeatures !== "") {
+            query.append("landUniqueFeatures", queries.landUniqueFeatures);
+        }
+    }
+    if (queries.hasOwnProperty('parking')) {
+        if (queries.parking !== false) {
+            query.append("parking", "1");
+        }
+    }
+    if (queries.hasOwnProperty('storage')) {
+        if (queries.storage !== false) {
+            query.append("storage", "1");
+        }
+    }
+    if (queries.hasOwnProperty('fireplace')) {
+        if (queries.fireplace !== false) {
+            query.append("fireplace", "1");
+        }
+    }
+    if (queries.hasOwnProperty('swimmingPool')) {
+        if (queries.swimmingPool !== false) {
+            query.append("swimmingPool", "1");
+        }
+    }
+    return query;
+}

@@ -1,0 +1,348 @@
+﻿$(function () {
+    let form = $('#email-form');
+    form.validate();
+    form.submit((e) => {
+        e.preventDefault()
+        let name = $('#email-name').val();
+        let address = $('#email-address').val();
+        let subject = "";
+        let phone = $('#email-phone').val();
+        let message = $('#email-message').val();
+        let accept = $('#contact-accept').is(":checked");
+
+       /* let response = grecaptcha.getResponse();
+        if(response.length === 0)
+        {
+            //reCaptcha not verified
+            e.preventDefault();
+            $('#error-captcha').empty().append("Please tick the recaptcha.");
+            return false;
+        }
+        $("#error-captcha").addClass("hidden");*/
+
+        let emailForm = {name, address, subject, phone, message, accept};
+        
+        if ($('#email-form').valid()) {
+            let buttonPost = $("#contact-button-post");
+            
+            $(document).ajaxSend(function() {
+                $(".fa-spinner-third").removeClass("hidden");
+                buttonPost.prop("disabled",true);
+            });
+            console.log(emailForm)
+            const emailAjax = $.ajax({
+                type: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                url: "/send-contact",
+                data: JSON.stringify(emailForm),
+                /*success: response => {
+                    buttonPost.prop("disabled", false);
+                    console.log(response);
+                }*/
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status === 200) {
+                        buttonPost.prop("disabled", false);
+
+                        if (jqXHR.responseJSON.success) {
+                            window.location.href = '/thankyou';
+                        }
+                    }
+                }
+            })
+
+            $.when(emailAjax).then(() => {
+                $('#email-name').val("");
+                $('#email-address').val("");
+                $('#email-subject').val("");
+                $('#email-phone').val("");
+                $('#email-message').val("");
+                $(".fa-spinner-third").addClass("hidden");
+            })
+        }
+    })
+});
+
+$(function () {
+    let form = $('#news-form');
+    form.validate();
+    form.submit((e) => {
+        e.preventDefault()
+        let name = $('#news-name').val();
+        let address = $('#news-address').val();
+
+        let response = grecaptcha.getResponse();
+        if (response.length === 0) {
+            //reCaptcha not verified
+            e.preventDefault();
+            $('#error-captcha').empty().append("Please tick the recaptcha.");
+            return false;
+        }
+        $("#error-captcha").addClass("hidden");
+
+        let newsForm = { name, address };
+
+        if ($('#news-form').valid()) {
+            let buttonPost = $("#news-button-post");
+
+            $(document).ajaxSend(function () {
+                $(".fa-spinner-third").removeClass("hidden");
+                buttonPost.prop("disabled", true);
+            });
+            console.log(newsForm)
+            const emailAjax = $.ajax({
+                type: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                url: "/send-news",
+                data: JSON.stringify(newsForm),
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status === 200) {
+                        buttonPost.prop("disabled", false);
+
+                        if (jqXHR.responseJSON.success) {
+                            window.location.href = '/thankyou';
+                        }
+                    }
+                }
+            })
+
+            $.when(emailAjax).then(() => {
+                $('#news-name').val("");
+                $('#news-address').val("");
+                $(".fa-spinner-third").addClass("hidden");
+            })
+        }
+    })
+});
+
+$(function () {
+    let form = $('#mandate-form');
+    form.validate();
+    form.submit((e) => {
+        e.preventDefault()
+        let controlArea = document.getElementById('select-area');
+        let area = controlArea.tomselect.items;
+        area = area.join(",");
+        let category = $('#mandate-category').val();
+        let controlSubcategory = document.getElementById('mandate-select-subCategory');
+        let subCategory = controlSubcategory.tomselect.items;
+        subCategory = subCategory.join(",");
+        let bedRooms = $('#mandate-bedrooms').val();
+        let priceFrom = $('#mandate-price-from').val();
+        let priceTo = $('#mandate-price-to').val();
+        let sqrFrom = $('#mandate-sqr-from').val();
+        let sqrTo = $('#mandate-sqr-to').val();
+        let aim = $('#mandate-aim').val();
+        let message = $('#mandate-description').val();
+        let address = $('#mandate-email').val();
+        let name = $('#mandate-name').val();
+        let phone = $('#mandate-phone').val();
+        let accept = $('#mandate-accept').is(":checked");
+
+        let response = grecaptcha.getResponse();
+        if(response.length === 0)
+        {
+            //reCaptcha not verified
+            e.preventDefault();
+            $('#error-captcha').empty().append("Please tick the recaptcha.");
+            return false;
+        }
+        $("#error-captcha").addClass("hidden");
+
+        let mandateForm = {area, category, subCategory, bedRooms, priceFrom, priceTo, sqrFrom, sqrTo, aim, message, address, name, phone, accept};
+        console.log(mandateForm)
+
+        //let rcres = grecaptcha.getResponse();
+        if ($('#mandate-form').valid()) {
+            let buttonPost = $("#mandate-button-post");
+            
+            $(document).ajaxSend(function() {
+                $(".fa-spinner-third").removeClass("hidden");
+                buttonPost.prop("disabled",true);
+            });
+            
+            const mandateAjax = $.ajax({
+                type: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                url: "/send-mandate",
+                data: JSON.stringify(mandateForm),
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status === 200) {
+                        buttonPost.prop("disabled", false);
+
+                        if (jqXHR.responseJSON.success) {
+                            window.location.href = '/thankyou';
+                        }
+                    }
+                }
+            })
+            $.when(mandateAjax).then(() => {
+                controlArea.tomselect.clear();
+                $('#mandate-category').val("");
+                $('#mandate-subcategory').val("");
+                $('#mandate-price').val("");
+                $('#mandate-sqr').val("");
+                $('#mandate-aim').val("");
+                $('#mandate-description').val("");
+                $('#mandate-email').val("");
+                $('#mandate-name').val("");
+                $('#mandate-phone').val("");
+                $('#mandate-mobile').val("");
+                $('#mandate-accept').prop("checked", false);
+                $(".fa-spinner-third").addClass("hidden");
+            })
+        }
+    })
+});
+
+$(function () {
+    let form = $('#inquiry-form');
+    form.validate();
+    form.submit((e) => {
+        e.preventDefault()
+        let controlArea = document.getElementById('select-area');
+        let area = controlArea.tomselect.items;
+        area = area.join(",");
+        
+        let category = $('#inquiry-category').val();
+        
+        let controlSub = document.getElementById('select-subCategory');
+        let subcategory = controlSub.tomselect.items;
+        subcategory = subcategory.join(",");
+        
+        let priceFrom = $('#inquiry-price-from').val();
+        let priceTo = $('#inquiry-price-to').val();
+        let sqrFrom = $('#inquiry-sqr-from').val();
+        let sqrTo = $('#inquiry-sqr-to').val();
+        let aim = $('#inquiry-aim').val();
+        let bedRooms = $('#inquiry-bedrooms').val();
+        let message = $('#inquiry-description').val();
+        let address = $('#inquiry-email').val();
+        let name = $('#inquiry-name').val();
+        let phone = $('#inquiry-phone').val();
+        let accept = $('#inquiry-accept').is(":checked");
+
+        let response = grecaptcha.getResponse();
+        if(response.length === 0)
+        {
+            //reCaptcha not verified
+            e.preventDefault();
+            $('#error-captcha').empty().append("Please tick the recaptcha.");
+            return false;
+        }
+        $("#error-captcha").addClass("hidden");
+
+        let inquiryForm = {area, category, subcategory, priceFrom, priceTo, sqrFrom, sqrTo, aim, bedRooms, message, address, name, phone, accept};
+        
+        if ($('#inquiry-form').valid()) {
+            let buttonPost = $("#inquiry-button-post");
+            
+            $(document).ajaxSend(function() {
+                $(".fa-spinner-third").removeClass("hidden");
+                buttonPost.prop("disabled",true);
+            });
+            
+            const inquiryAjax = $.ajax({
+                type: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                url: "/send-inquiry",
+                data: JSON.stringify(inquiryForm),
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status === 200) {
+                        buttonPost.prop("disabled", false);
+
+                        if (jqXHR.responseJSON.success) {
+                            window.location.href = '/thankyou';
+                        }
+                    }
+                }
+            })
+
+            $.when(inquiryAjax).then(() => {
+                controlArea.tomselect.clear();
+                controlSub.tomselect.clear();
+                $('#inquiry-price-from').val("");
+                $('#inquiry-price-to').val("");
+                $('#inquiry-sqr-from').val("");
+                $('#inquiry-sqr-to').val("");
+                $('#inquiry-aim').val("");
+                $('#inquiry-description').val("");
+                $('#inquiry-email').val("");
+                $('#inquiry-name').val("");
+                $('#inquiry-phone').val("");
+                $('#inquiry-mobile').val("");
+                $('#inquiry-accept').prop("checked", false);
+                $(".fa-spinner-third").addClass("hidden");
+            })
+        }
+    })
+});
+
+$(function () {
+    let form = $('#interested-form');
+    form.validate();
+    form.submit((e) => {
+        e.preventDefault()
+        let message = $('#interested-message').val();
+        let address = $('#interested-email').val();
+        let name = $('#interested-name').val();
+        let phone = $('#interested-phone').val();
+        let accept = $('#interested-accept').is(":checked");
+
+        let response = grecaptcha.getResponse();
+        if(response.length === 0)
+        {
+            //reCaptcha not verified
+            e.preventDefault();
+            $('#error-captcha').empty().append("Please tick the recaptcha.");
+            return false;
+        }
+        $("#error-captcha").addClass("hidden");
+
+        let interestedForm = {message, address, name, phone, accept};
+        console.log(interestedForm);
+        
+        if ($('#interested-form').valid()) {
+            let buttonPost = $("#interested-button-post");
+            
+            $(document).ajaxSend(function() {
+                $(".fa-spinner-third").removeClass("hidden");
+                buttonPost.prop("disabled",true);
+            });
+           
+            const interestedAjax = $.ajax({
+                type: "POST",
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                url: "/send-interested",
+                data: JSON.stringify(interestedForm),
+                success: function (data, textStatus, jqXHR) {
+                    if (jqXHR.status === 200) {
+                        buttonPost.prop("disabled", false);
+
+                        if (jqXHR.responseJSON.success) {
+                            window.location.href = '/thankyou';
+                        }
+                    }
+                }
+            })
+
+            $.when(interestedAjax).then(() => {
+                $('#interested-message').val("");
+                $('#interested-email').val("");
+                $('#interested-name').val("");
+                $('#interested-phone').val("");
+                $(".interested-accept").prop("checked", false);
+                $(".fa-spinner-third").addClass("hidden");
+            })
+        }
+    })
+});

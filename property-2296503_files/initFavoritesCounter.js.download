@@ -1,0 +1,32 @@
+document.addEventListener('DOMContentLoaded', function () {
+    let ids = getCookies("favorites");
+    if (ids !== null || ids === []) {
+        getEstates();
+    }
+    function getEstates() {
+        setTimeout(() => updatedFavoritesCount(ids), 500);
+    }
+});
+
+function updatedFavoritesCount(ids) {
+    const countFavoritesAjax = $.ajax({
+        type: "POST",
+        headers: {
+            "Content-Type": "application/json",
+        },
+        url: `/count-favorites`,
+        data: JSON.stringify(ids),
+        success: (response) => {
+            setCookie('favorites', JSON.stringify(response), 365);
+        },
+        error: error => {
+            console.log(error);
+            alert('Server error');
+        }
+    });
+
+    $.when(countFavoritesAjax).then(() => {
+        let ids = getCookies("favorites");
+        $('#favorites-count').text(ids.length);
+    })
+}

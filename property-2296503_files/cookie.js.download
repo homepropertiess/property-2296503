@@ -1,0 +1,96 @@
+if (!window.favoritesScriptLoaded) {
+    window.favoritesScriptLoaded = true;
+    hasBeenLoaded = true;
+
+    document.addEventListener('DOMContentLoaded', function () {
+        const clearFavoritesBtn = document.getElementById('clear-favorites-btn');
+
+        if (clearFavoritesBtn) {
+            clearFavoritesBtn.addEventListener('click', function () {
+                clearFavorites();
+                $('#favorites-count').text(0);
+            });
+        }
+
+        // Wait for the properties to be fully loaded before initializing
+        const propertyLoadInterval = setInterval(() => {
+            const propertyCards = document.querySelectorAll('.brenda');
+            if (propertyCards.length > 0) {
+                clearInterval(propertyLoadInterval);
+                initializeProperties();
+            }
+        }, 500);
+    });
+
+    function setCookie(name, value, days) {
+        const expires = new Date();
+        expires.setTime(expires.getTime() + days * 24 * 60 * 60 * 1000);
+        document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/`;
+    }
+
+    function clearFavorites() {
+        document.cookie = 'favorites=;expires=Thu, 01 Jan 1970 00:00:00 UTC;path=/';
+        const favoritesListItems = document.getElementById('favorites-list-items');
+        favoritesListItems.innerHTML = '';
+        $('#noFavorites').show();
+        $('#clear-favorites-btn').hide();
+    }
+
+    function toggleFavorite(propertyId) {
+        console.log(propertyId)
+        // Check if the property is already in favorites before toggling
+        const favoritesFromCookies = getCookies('favorites') || [];
+        const isAlreadyInCookies = favoritesFromCookies.includes(propertyId);
+
+        if (isAlreadyInCookies) {
+            // Remove property from favorites
+            const updatedFavorites = favoritesFromCookies.filter(id => id !== propertyId);
+            $('#favorites-count').text(updatedFavorites.length);
+            setCookie('favorites', JSON.stringify(updatedFavorites), 365);
+
+        } else if (!isAlreadyInCookies) {
+            // Add property to favorites
+            const favorites = favoritesFromCookies.slice();
+            favorites.push(propertyId);
+            $('#favorites-count').text(favorites.length);
+            setCookie('favorites', JSON.stringify(favorites), 365);
+        }
+
+        document.dispatchEvent(new Event('contentReady'));
+    }
+
+    function initializeProperties() {
+        const propertyCards = document.querySelectorAll('.brenda');
+
+        propertyCards.forEach((card, index) => {
+            const favoriteBtn = card.querySelector('.favorite-btn');
+
+            if (favoriteBtn) {
+                // Add the data-property-id attribute to each card
+                const propertyId = card.dataset.propertyId;
+                card.setAttribute('data-property-id', propertyId);
+
+               /* console.log(propertyId)*/
+                favoriteBtn.addEventListener('click', function (event) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                    const propertyId = card.dataset.propertyId;
+                    //console.log(propertyId)
+                    let icon = $(favoriteBtn).children();
+                    $(icon).toggleClass('far fas');
+                    toggleFavorite(propertyId);
+                });
+                $('#clear-favorites-btn').show();
+            }
+        });
+
+    }
+}
+
+
+
+
+
+
+
+

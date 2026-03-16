@@ -1,0 +1,30 @@
+$(document).ready(function () {
+    $('.dropdown-input').on('click', function (event) {
+        event.stopPropagation();
+        $('.second-div').toggle();
+    });
+
+    $('.range-input').on('click', function (event) {
+        event.stopPropagation(); // Prevent the click event from reaching the document level
+    });
+
+    $(document).on('click', function () {
+        $('.second-div').hide();
+    });
+});
+
+
+$(document).ready(function () {
+    $('#priceInput').on('click', function (event) {
+        event.stopPropagation();
+        $('#priceRangeDiv').toggle();
+    });
+
+    $('#priceRangeDiv').on('click', function (event) {
+        event.stopPropagation(); // Prevent the click event from closing the second div
+    });
+
+    $(document).on('click', function () {
+        $('#priceRangeDiv').hide();
+    });
+});

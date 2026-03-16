@@ -1,0 +1,101 @@
+﻿function storeAreas() {
+    sessionStorage.removeItem('options');
+    sessionStorage.removeItem('areas');
+    let controlArea = document.getElementById('select-area');
+    let options = controlArea.tomselect.options;
+    let areas = controlArea.tomselect.items;
+    if (areas.length > 0) {
+        let optionsArray = [];
+        for (area of areas){
+            let optionsPlugin = options[area];
+            const {areaID, level, nameEN, nameGR, object_id, parentID, parentNameEN, parentNameGR} = optionsPlugin;
+            let option = {areaID, level, nameEN, nameGR, object_id, parentID, parentNameEN, parentNameGR};
+            optionsArray.push(option);
+        }
+        sessionStorage.options = JSON.stringify(optionsArray);
+        sessionStorage.areas = JSON.stringify(areas);
+    }
+}
+function fixStoreOptions() {
+    let controlArea = document.getElementById('select-area');
+    let options = controlArea.tomselect.options;
+    let areas = controlArea.tomselect.items;
+    
+    let optionsArray;
+    let previousItems = JSON.parse(sessionStorage.getItem('optionsFixed'));
+    previousItems == null ? optionsArray = [] : optionsArray = previousItems;
+    
+    for(area of areas) {
+        
+        let optionsPlugin = options[area];
+        const {areaID, level, nameEN, nameGR, object_id, parentID, parentNameEN, parentNameGR} = optionsPlugin;
+        let optionFixed = {areaID, level, nameEN, nameGR, object_id, parentID, parentNameEN, parentNameGR};
+        
+        let exists = false;
+        for (area of optionsArray) {
+            
+            if (area.areaID === optionFixed.areaID) exists = true;
+        }
+        
+        if (exists === false) {
+            optionsArray.push(optionFixed);
+        }
+        
+        if (optionsArray.length === 0) {
+            optionsArray.push(optionFixed);
+        }
+    }
+    sessionStorage.optionsFixed = JSON.stringify(optionsArray);
+}
+function filtersHome() {
+    storeAreas();
+    let queries = valuesFromQueriesHome();
+    location.href = urlQueriesBuilder(queries);
+}
+function filtersLayout() {
+    let queries = valuesFormQueriesLayout();
+    location.href = urlQueriesBuilder(queries);
+}
+function urlQueriesBuilder(queries) {
+    let baseUrl = '/results?';
+    let urlSearchQuery = buildQueryString(queries);
+    return baseUrl + urlSearchQuery;
+}
+function filtersResults(pageClicked) {
+    let queries = valuesFromQueries(pageClicked);
+    let location = urlQueriesBuilder(queries);
+    fixStoreOptions();
+    window.history.pushState(null, null, location);
+    return queries;
+}
+function requestResults(pageClicked) {
+    $(document).ajaxSend(function () {
+        $(".loader-wrap").fadeTo(300, 0.7);
+    });
+    $.ajax({
+        type: "POST",
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        url: "/search-results",
+        data: JSON.stringify(filtersResults(pageClicked)),
+        success: response => {
+            console.log(response)
+            if (response.error === 'redirect') {
+                location.href = '/error';
+            }
+            setTimeout(function () {
+                $(".loader-wrap").fadeOut(300);
+            }, 500);
+            $("#estatesResults").html(response);
+            /*estatePopups();*/
+        },
+        error: error => {
+            console.log(error);
+            alert('Server error');
+            setTimeout(function () {
+                $("#overlay").fadeOut(300);
+            }, 500);
+        }
+    });
+}
